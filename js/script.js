@@ -6,11 +6,11 @@
     for (let pic of jsonData["data"]) {
       var ma = document.createElement('a');
       ma.setAttribute("class", "gallery-link");
-      ma.setAttribute("href", pic["cover"]);
+      ma.setAttribute("href", "./img/" + pic["filename"]);
       var figure = document.createElement('figure');
       figure.setAttribute("class", "gallery-image");
       var img = document.createElement('img');
-      img.src = pic["cover"];
+      img.src = "./img/" + pic["filename"];
       img.setAttribute("height", "1400");
       img.setAttribute("width", "1000");
       var fig = document.createElement('figcaption');
