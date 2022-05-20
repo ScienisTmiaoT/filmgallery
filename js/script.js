@@ -16,6 +16,7 @@
       var fig = document.createElement('figcaption');
       fig.innerText = pic["matched_date"];
       fig.title = "《" + pic["title"] + "》";
+      fig.setAttribute("url", "https://movie.douban.com/subject/" + pic["id"]);
       figure.appendChild(img);
       figure.appendChild(fig);
       ma.appendChild(figure);
@@ -30,7 +31,9 @@
       image: {
         verticalFit: true,
         titleSrc: function (item) {
-          return item.el.find('figcaption').attr('title') || item.el.attr('title');
+          var text = item.el.find('figcaption').attr('title') || item.el.attr('title');
+          var url = item.el.find('figcaption').attr('url');
+          return `<a href="${url}" target="_blank">${text}</a>`;
         }
       },
       zoom: {
