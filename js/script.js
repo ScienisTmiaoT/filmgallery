@@ -3,29 +3,43 @@
   document.getElementById('datajs').src = 'js/data.js' + '?v=' + Date.now();
   const jsonData = JSON.parse(data);
   const dataList = jsonData["data"];
-  var parent = document.querySelector('.gallery');
-  const MAX_SIZE = 6;
+  var parent = document.querySelector('.card-list');
+  const MAX_SIZE = 8;
   let start = 0;
   start = appendImgs(parent, start, start + MAX_SIZE, dataList);
 
   function appendImg(pic, parent) {
-    var ma = document.createElement('a');
-    ma.setAttribute("class", "gallery-link");
-    ma.setAttribute("href", "./img/" + pic["filename"]);
-    var figure = document.createElement('figure');
-    figure.setAttribute("class", "gallery-image");
-    var img = document.createElement('img');
-    img.src = "./img/" + pic["filename"];
-    img.setAttribute("height", "1400");
-    img.setAttribute("width", "1000");
-    var fig = document.createElement('figcaption');
-    fig.innerText = pic["matched_date"];
-    fig.title = "《" + pic["title"] + "》";
-    fig.setAttribute("url", "https://movie.douban.com/subject/" + pic["id"]);
-    figure.appendChild(img);
-    figure.appendChild(fig);
-    ma.appendChild(figure);
-    parent.appendChild(ma);
+    var link = "https://movie.douban.com/subject/" + pic["id"];
+    var path = "./img/" + pic["filename"];
+    var li = document.createElement('li');
+    li.setAttribute("class", "card");
+
+    var a1 = document.createElement('a');
+    a1.setAttribute("class", "card-image is-loaded");
+    a1.setAttribute("href", link);
+    a1.setAttribute("target", "_blank");
+    a1.style.backgroundImage = 'url(' + path + ')';
+
+    var img1 = document.createElement('img');
+    img1.setAttribute("src", path);
+    img1.setAttribute("alt", "Psychopomp");
+
+    var a2 = document.createElement('a');
+    a2.setAttribute("class", "card-description");
+    a2.setAttribute("href", link);
+    a2.setAttribute("target", "_blank");
+
+    var h2 = document.createElement('h2');
+    h2.innerText = pic["title"];
+    var p = document.createElement('p');
+    p.innerText = pic["matched_date"];
+
+    a1.appendChild(img1);
+    a2.appendChild(h2);
+    a2.appendChild(p);
+    li.appendChild(a1);
+    li.appendChild(a2);
+    parent.appendChild(li);
   }
 
   function appendImgs(parent, start, end, dl) {
@@ -35,33 +49,6 @@
     }
     return e;
   }
-
-  $('.gallery-link').magnificPopup({
-    type: 'image',
-    closeOnContentClick: true,
-    closeBtnInside: false,
-    mainClass: 'mfp-with-zoom mfp-img-mobile',
-    image: {
-      verticalFit: true,
-      titleSrc: function (item) {
-        var text = item.el.find('figcaption').attr('title') || item.el.attr('title');
-        var url = item.el.find('figcaption').attr('url');
-        return `<a href="${url}" target="_blank">${text}</a>`;
-      }
-    },
-    zoom: {
-      enabled: true
-    },
-    // duration: 300
-    gallery: {
-      enabled: true,
-      navigateByImgClick: false,
-      tCounter: ''
-    },
-    disableOn: function () {
-      return $(window).width() > 640;
-    }
-  });
 
   window.addEventListener('scroll', () => {
     if (window.scrollY + window.innerHeight >=
